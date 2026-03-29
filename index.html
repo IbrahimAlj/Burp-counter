@@ -7,49 +7,39 @@
   <link href="https://fonts.googleapis.com/css2?family=Rubik+Bubbles&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
-      min-height: 100vh;
-      display: flex; flex-direction: column;
+      min-height: 100vh; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
-      font-family: 'Syne', sans-serif;
-      overflow: hidden; position: relative;
+      font-family: 'Syne', sans-serif; overflow: hidden; position: relative;
     }
-
     .bg {
       position: fixed; inset: 0;
       background: url('bg.webp') center center / cover no-repeat;
       filter: brightness(0.35) blur(2px);
-      transform: scale(1.05);
-      z-index: 0;
+      transform: scale(1.05); z-index: 0;
     }
-
     .overlay {
       position: fixed; inset: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.7));
       z-index: 1;
     }
-
     .wrapper {
       position: relative; z-index: 10;
       display: flex; flex-direction: column;
       align-items: center; gap: 1.5rem;
       padding: 2rem; width: min(440px, 100%);
     }
-
     .title {
       font-family: 'Rubik Bubbles', cursive;
-      font-size: clamp(3rem, 12vw, 5rem);
-      color: #d4f53c;
-      text-shadow: 0 0 40px rgba(212,245,60,0.6), 0 0 80px rgba(212,245,60,0.3);
+      font-size: clamp(3rem,12vw,5rem); color: #d4f53c;
+      text-shadow: 0 0 40px rgba(212,245,60,0.6);
       letter-spacing: 2px; text-align: center;
       animation: pulse 3s ease-in-out infinite;
     }
     @keyframes pulse {
-      0%,100% { text-shadow: 0 0 40px rgba(212,245,60,0.5), 0 0 80px rgba(212,245,60,0.2); }
-      50%      { text-shadow: 0 0 80px rgba(212,245,60,0.9), 0 0 120px rgba(212,245,60,0.5); }
+      0%,100% { text-shadow: 0 0 40px rgba(212,245,60,0.5); }
+      50%      { text-shadow: 0 0 80px rgba(212,245,60,0.9), 0 0 120px rgba(212,245,60,0.4); }
     }
-
     .live-badge {
       display: flex; align-items: center; gap: 6px;
       background: rgba(255,255,255,0.1); backdrop-filter: blur(10px);
@@ -58,231 +48,153 @@
       font-size: 0.7rem; font-weight: 800; letter-spacing: 3px;
       text-transform: uppercase; color: #fff; margin-top: -1rem;
     }
-    .live-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: #4ade80; animation: blink 1.2s ease-in-out infinite;
-    }
+    .live-dot { width:7px; height:7px; border-radius:50%; background:#4ade80; animation: blink 1.2s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
     .counter-card {
       background: rgba(0,0,0,0.55); backdrop-filter: blur(20px);
       border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 28px; padding: 2.5rem 3rem;
-      width: 100%; text-align: center;
+      border-radius: 28px; padding: 2.5rem 3rem; width: 100%; text-align: center;
     }
-
-    .count-label {
-      font-size: 0.65rem; font-weight: 800; letter-spacing: 6px;
-      text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 0.3rem;
-    }
-
+    .count-label { font-size:0.65rem; font-weight:800; letter-spacing:6px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:0.3rem; }
     .count-display {
       font-family: 'Rubik Bubbles', cursive;
-      font-size: clamp(5rem, 22vw, 8rem);
-      color: #fff; line-height: 1; display: inline-block;
+      font-size: clamp(5rem,22vw,8rem); color:#fff; line-height:1; display:inline-block;
     }
     .count-display.bump { animation: bump 0.35s cubic-bezier(0.34,1.56,0.64,1); }
     @keyframes bump {
-      0%  { transform: scale(1); }
-      40% { transform: scale(1.2); color: #d4f53c; }
-      100%{ transform: scale(1); }
+      0%  { transform:scale(1); }
+      40% { transform:scale(1.2); color:#d4f53c; }
+      100%{ transform:scale(1); }
     }
-
-    .viewers {
-      font-size: 0.68rem; color: rgba(255,255,255,0.35);
-      font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; margin-top: 0.5rem;
-    }
-
+    .status-text { font-size:0.68rem; color:rgba(255,255,255,0.4); font-weight:700; letter-spacing:2px; text-transform:uppercase; margin-top:0.5rem; }
+    .status-text.err { color:#ff6b6b; }
     .burp-btn {
-      width: 100%; padding: 1.4rem 2rem;
-      background: #d4f53c; color: #0d0d0d;
-      border: none; border-radius: 18px;
-      font-family: 'Rubik Bubbles', cursive; font-size: 1.9rem;
-      cursor: pointer; letter-spacing: 2px;
+      width:100%; padding:1.4rem 2rem; background:#d4f53c; color:#0d0d0d;
+      border:none; border-radius:18px; font-family:'Rubik Bubbles',cursive; font-size:1.9rem;
+      cursor:pointer; letter-spacing:2px;
       box-shadow: 0 4px 0 #9bb82a, 0 0 60px rgba(212,245,60,0.3);
       transition: transform 0.08s, box-shadow 0.08s;
-      user-select: none; -webkit-tap-highlight-color: transparent;
+      user-select:none; -webkit-tap-highlight-color:transparent;
     }
-    .burp-btn:active { transform: translateY(4px); box-shadow: 0 0 0 #9bb82a; }
-    .burp-btn:hover:not(:active) { box-shadow: 0 4px 0 #9bb82a, 0 0 80px rgba(212,245,60,0.5); }
-    .burp-btn:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    .controls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; width: 100%; }
+    .burp-btn:active { transform:translateY(4px); box-shadow:0 0 0 #9bb82a; }
+    .burp-btn:hover:not(:active) { box-shadow:0 4px 0 #9bb82a, 0 0 80px rgba(212,245,60,0.5); }
+    .burp-btn:disabled { opacity:0.6; cursor:not-allowed; }
+    .controls { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; width:100%; }
     .ctrl-btn {
-      padding: 0.85rem; border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(0,0,0,0.4); backdrop-filter: blur(10px);
-      color: #fff; font-family: 'Syne', sans-serif;
-      font-size: 0.78rem; font-weight: 700; letter-spacing: 2px;
-      text-transform: uppercase; cursor: pointer;
+      padding:0.85rem; border-radius:14px; border:1px solid rgba(255,255,255,0.12);
+      background:rgba(0,0,0,0.4); backdrop-filter:blur(10px);
+      color:#fff; font-family:'Syne',sans-serif; font-size:0.78rem; font-weight:700;
+      letter-spacing:2px; text-transform:uppercase; cursor:pointer;
       transition: border-color 0.2s, background 0.2s, transform 0.1s;
     }
-    .ctrl-btn:hover { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); }
-    .ctrl-btn:active { transform: scale(0.97); }
-    .ctrl-btn.danger { border-color: rgba(255,79,79,0.3); color: #ff6b6b; }
-    .ctrl-btn.danger:hover { border-color: #ff4f4f; background: rgba(255,79,79,0.1); }
-
-    .particle { position: fixed; pointer-events: none; font-size: 1.6rem; animation: burst 0.8s ease-out forwards; z-index: 99; }
+    .ctrl-btn:hover { border-color:rgba(255,255,255,0.3); background:rgba(255,255,255,0.1); }
+    .ctrl-btn:active { transform:scale(0.97); }
+    .ctrl-btn.danger { border-color:rgba(255,79,79,0.3); color:#ff6b6b; }
+    .ctrl-btn.danger:hover { border-color:#ff4f4f; background:rgba(255,79,79,0.1); }
+    .particle { position:fixed; pointer-events:none; font-size:1.6rem; animation:burst 0.8s ease-out forwards; z-index:99; }
     @keyframes burst {
-      0%   { transform: translate(-50%,-50%) scale(0.5); opacity: 1; }
-      100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.5); opacity: 0; }
+      0%   { transform:translate(-50%,-50%) scale(0.5); opacity:1; }
+      100% { transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(1.5); opacity:0; }
     }
-
     .toast {
-      position: fixed; bottom: 2rem; left: 50%;
-      transform: translateX(-50%) translateY(120px);
-      background: #d4f53c; color: #0d0d0d;
-      padding: 0.6rem 1.6rem; border-radius: 99px;
-      font-weight: 800; font-size: 0.85rem; letter-spacing: 2px;
-      text-transform: uppercase;
-      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index: 200;
+      position:fixed; bottom:2rem; left:50%;
+      transform:translateX(-50%) translateY(120px);
+      background:#d4f53c; color:#0d0d0d; padding:0.6rem 1.6rem; border-radius:99px;
+      font-weight:800; font-size:0.85rem; letter-spacing:2px; text-transform:uppercase;
+      transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1); z-index:200;
     }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-
-    .error-msg { font-size: 0.7rem; color: #ff6b6b; text-align: center; letter-spacing: 1px; }
+    .toast.show { transform:translateX(-50%) translateY(0); }
   </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="overlay"></div>
-
 <div class="wrapper">
   <h1 class="title">BURP 💨</h1>
   <div class="live-badge"><div class="live-dot"></div> LIVE FOR EVERYONE</div>
-
   <div class="counter-card">
     <p class="count-label">Global Rips</p>
     <div class="count-display" id="count">...</div>
-    <p class="viewers" id="status">Loading...</p>
+    <p class="status-text" id="status">Connecting...</p>
   </div>
-
   <button class="burp-btn" id="burpBtn" onclick="burp()">💨 BURP!</button>
-
   <div class="controls">
     <button class="ctrl-btn" onclick="undo()">↩ Undo</button>
     <button class="ctrl-btn danger" onclick="resetCount()">✕ Reset</button>
   </div>
 </div>
-
 <div class="toast" id="toast"></div>
-
 <script>
-  // Uses CountAPI — a free shared counter service
-  const NAMESPACE = 'burpcounter-ibrahim-2024';
-  const KEY = 'burps';
-  const BASE = 'https://api.countapi.xyz';
   const MILESTONES = {5:'Warming Up!',10:'Getting Gassy!',25:'Rip City!',50:'BURP LEGEND!',100:'CENTURY BURP! 🏆'};
   const EMOJIS = ['💨','🟡','✨','⚡','🌟','💫'];
-
   let localCount = 0;
-  let polling;
 
-  async function getCount() {
-    try {
-      const r = await fetch(`${BASE}/get/${NAMESPACE}/${KEY}`);
-      const d = await r.json();
-      return d.value || 0;
-    } catch { return null; }
-  }
-
-  async function hitCount() {
-    const r = await fetch(`${BASE}/hit/${NAMESPACE}/${KEY}`);
-    const d = await r.json();
-    return d.value;
-  }
-
-  async function setCount(val) {
-    await fetch(`${BASE}/set/${NAMESPACE}/${KEY}?value=${val}`);
+  async function api(action) {
+    const url = action ? `/api/count?action=${action}` : '/api/count';
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('API error');
+    return (await r.json()).value;
   }
 
   async function init() {
-    // Create key if not exists, then get value
     try {
-      await fetch(`${BASE}/create?namespace=${NAMESPACE}&key=${KEY}&enable_reset=1`);
-    } catch {}
-    const val = await getCount();
-    if (val !== null) {
-      updateDisplay(val);
-      document.getElementById('status').textContent = 'Live global counter';
-    } else {
-      document.getElementById('status').textContent = 'Connection error';
-    }
-    // Poll every 3 seconds to stay in sync
-    polling = setInterval(async () => {
-      const v = await getCount();
-      if (v !== null) updateDisplay(v);
-    }, 3000);
-  }
-
-  function updateDisplay(val) {
-    localCount = val;
-    document.getElementById('count').textContent = val;
-    document.getElementById('status').textContent = 'Live global counter';
-  }
-
-  function bumpAnim() {
-    const el = document.getElementById('count');
-    el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump');
-  }
-
-  function spawnParticles(x, y) {
-    for (let i = 0; i < 6; i++) {
-      const p = document.createElement('div'); p.className = 'particle';
-      const angle = (Math.PI*2/6)*i + Math.random()*0.5;
-      const dist = 60 + Math.random()*60;
-      p.style.setProperty('--dx', Math.cos(angle)*dist+'px');
-      p.style.setProperty('--dy', Math.sin(angle)*dist+'px');
-      p.style.left = x+'px'; p.style.top = y+'px';
-      p.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-      document.body.appendChild(p); setTimeout(() => p.remove(), 800);
+      const val = await api();
+      setCount(val);
+      setStatus('Live global counter');
+      setInterval(async () => {
+        try { setCount(await api()); } catch {}
+      }, 3000);
+    } catch {
+      setStatus('Connection error', true);
+      document.getElementById('count').textContent = '?';
     }
   }
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg; t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2200);
+  function setCount(v) { localCount = v; document.getElementById('count').textContent = v; }
+  function setStatus(msg, err=false) {
+    const el = document.getElementById('status');
+    el.textContent = msg; el.className = 'status-text' + (err ? ' err' : '');
   }
+
+  function bumpAnim() { const el=document.getElementById('count'); el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
+  function spawnParticles(x,y) {
+    for(let i=0;i<6;i++){
+      const p=document.createElement('div'); p.className='particle';
+      const angle=(Math.PI*2/6)*i+Math.random()*0.5, dist=60+Math.random()*60;
+      p.style.setProperty('--dx',Math.cos(angle)*dist+'px');
+      p.style.setProperty('--dy',Math.sin(angle)*dist+'px');
+      p.style.left=x+'px'; p.style.top=y+'px';
+      p.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+      document.body.appendChild(p); setTimeout(()=>p.remove(),800);
+    }
+  }
+  function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2200); }
 
   async function burp() {
-    const btn = document.getElementById('burpBtn');
-    const rect = btn.getBoundingClientRect();
-    btn.disabled = true;
-    bumpAnim();
-    spawnParticles(rect.left + rect.width/2, rect.top + rect.height/2);
-    if (navigator.vibrate) navigator.vibrate(40);
+    const btn=document.getElementById('burpBtn');
+    const rect=btn.getBoundingClientRect();
+    btn.disabled=true; bumpAnim();
+    spawnParticles(rect.left+rect.width/2, rect.top+rect.height/2);
+    if(navigator.vibrate) navigator.vibrate(40);
     try {
-      const newVal = await hitCount();
-      updateDisplay(newVal);
-      if (MILESTONES[newVal]) showToast(MILESTONES[newVal]);
-    } catch { showToast('Error!'); }
-    btn.disabled = false;
+      const v = await api('hit');
+      setCount(v); setStatus('Live global counter');
+      if(MILESTONES[v]) showToast(MILESTONES[v]);
+    } catch { showToast('Error — check connection!'); setStatus('Connection error', true); }
+    btn.disabled=false;
   }
 
   async function undo() {
-    if (localCount <= 0) return;
-    try {
-      await setCount(localCount - 1);
-      updateDisplay(localCount - 1);
-      showToast('Undone!');
-    } catch { showToast('Error!'); }
+    try { setCount(await api('decr')); showToast('Undone!'); } catch { showToast('Error!'); }
   }
 
   async function resetCount() {
-    if (!localCount) return;
-    if (!confirm('Reset the GLOBAL burp count to zero for everyone?')) return;
-    try {
-      await setCount(0);
-      updateDisplay(0);
-      showToast('Reset! Fresh air.');
-    } catch { showToast('Error!'); }
+    if(!localCount) return;
+    if(!confirm('Reset the GLOBAL burp count to zero for everyone?')) return;
+    try { setCount(await api('reset')); showToast('Reset! Fresh air.'); } catch { showToast('Error!'); }
   }
 
-  document.addEventListener('keydown', e => {
-    if (e.code === 'Space' || e.code === 'Enter') { e.preventDefault(); burp(); }
-  });
-
+  document.addEventListener('keydown', e => { if(e.code==='Space'||e.code==='Enter'){e.preventDefault();burp();} });
   init();
 </script>
 </body>
