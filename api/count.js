@@ -1,13 +1,16 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   if (req.method === 'OPTIONS') return res.status(200).end();
 
-  const url   = process.env.UPSTASH_REDIS_REST_URL;
-  const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const url   = process.env.UPSTASH_REDIS_REST_URL   || process.env.KV_REST_API_URL;
+  const token = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 
+  // Debug: tell us what env vars exist
   if (!url || !token) {
-    return res.status(500).json({ error: 'Redis not configured' });
+    const keys = Object.keys(process.env).filter(k =>
+      k.includes('UPSTASH') || k.includes('KV') || k.includes('REDIS')
+    );
+    return res.status(500).json({ error: 'Redis not configured', found_keys: keys });
   }
 
   const r = (cmd) => fetch(`${url}/${cmd}`, {
